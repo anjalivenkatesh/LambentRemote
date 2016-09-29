@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "me.tatarka:gradle-retrolambda:${retrolambdaVersion}"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion COMPILE_API
+    buildToolsVersion BUILD_TOOLS_VERSION
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "com.lambent.lambentremote"
+        minSdkVersion 21
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+
+    compile "com.github.aurae:rxbonjour:${rxBonjourVersion}"
+    compile "com.squareup.retrofit:retrofit:${retrofitVersion}"
+    compile "com.google.code.gson:gson:${gsonVersion}"
+    compile "io.reactivex:rxjava:${rxJavaVersion}"
+    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    compile "com.jakewharton.retrofit:retrofit1-okhttp3-client:${retrofitOkhttpVersion}"
+}
