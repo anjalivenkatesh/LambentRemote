@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.lambent.lambentremote.common.RetrofitServicesFactory;
 import com.lambent.lambentremote.model.ProgramListResponse;
-import com.lambent.lambentremote.networking.ProgramListService;
+import com.lambent.lambentremote.networking.ProgramListRetrofitService;
 
 import rx.Observable;
 import rx.Observer;
@@ -62,7 +62,7 @@ public class ProgramFetchNetworkFragment extends Fragment {
         String hostAddress = service.getHost().getHostAddress();
         int port = service.getPort();
 
-        ProgramListService programListService = RetrofitServicesFactory.newService(ProgramListService.class, hostAddress, port);
+        ProgramListRetrofitService programListService = RetrofitServicesFactory.newService(ProgramListRetrofitService.class, hostAddress, port);
         Observable<ProgramListResponse> programListResponseObservable = programListService.getProgramList();
 
         Subscription programListSubscription = programListResponseObservable.subscribeOn(Schedulers.newThread())

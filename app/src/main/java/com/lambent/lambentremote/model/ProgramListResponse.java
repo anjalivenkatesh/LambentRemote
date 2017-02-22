@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.lambent.lambentremote.common.ParcelableUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +31,12 @@ public class ProgramListResponse implements Parcelable {
     }
 
     protected ProgramListResponse(Parcel in) {
+        programs = ParcelableUtils.readParcelablesListHashmapToParcel(in, LambentProgram.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        ParcelableUtils.writeParcelablesListHashmapToParcel(dest, programs);
     }
 
     @Override

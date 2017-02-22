@@ -13,26 +13,38 @@ import java.util.Map;
  */
 public class ParcelableUtils {
 
-    public static void writeParcelablesListHashmapToParcel(Parcel dest, HashMap<String, List<Parcelable>> hashMap, int flags) {
+    private static final int NULL_FLAG = -1;
+
+    public static <T extends Parcelable> void writeParcelablesListHashmapToParcel(Parcel dest, HashMap<String, List<T>> hashMap) {
+        if (hashMap == null) {
+            dest.writeInt(NULL_FLAG);
+            return;
+        }
+
         final int hashMapSize = hashMap.size();
         dest.writeInt(hashMapSize);
 
-        for (Map.Entry<String, List<Parcelable>> entry : hashMap.entrySet()) {
+        for (Map.Entry<String, List<T>> entry : hashMap.entrySet()) {
             dest.writeString(entry.getKey());
-            List<Parcelable> list = entry.getValue();
+            List<T> list = entry.getValue();
             dest.writeTypedList(list);
         }
     }
 
-    public static HashMap<String, List<Parcelable>> readParcelablesListHashmapToParcel(Parcel source, Parcelable.Creator<Object> creator) {
-        HashMap<String, List<Parcelable>> hashMap = new HashMap<>();
-        final int hashMapSize = source.readInt();
+    public static <T extends Parcelable> HashMap<String, List<T>> readParcelablesListHashmapToParcel(Parcel source, Parcelable.Creator<T> creator) {
+        int num = source.readInt();
 
-        for (int i = 0; i < hashMapSize; i++) {
+        if (num == NULL_FLAG) {
+            return null;
+        }
+
+        HashMap<String, List<T>> hashMap = new HashMap<>(num);
+
+        for (int i = 0; i < num; i++) {
             String key = source.readString();
-            List<Object> list = new ArrayList<>();
+            List<T> list = new ArrayList<>();
             source.readTypedList(list, creator);
-            //TODO
+            hashMap.put(key, list);
         }
 
         return hashMap;

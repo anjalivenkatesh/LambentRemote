@@ -33,7 +33,7 @@ public class RemoteLightInstance implements Parcelable {
     protected RemoteLightInstance(Parcel in) {
         hostAddress = in.readString();
         port = in.readInt();
-        programListResponse = in.readParcelable();
+        programListResponse = in.readParcelable(ProgramListResponse.class.getClassLoader());
     }
 
     @Override
